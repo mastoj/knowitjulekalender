@@ -34,4 +34,4 @@ let result =
     |> Seq.sortBy (fun (k,_) -> k)
     |> Seq.map (fun (k, v) -> sprintf "%c%i" k (v |> Seq.length))
     |> Seq.toList
-    |> (fun x -> String.Join(", ", x))
+    |> String.concat
