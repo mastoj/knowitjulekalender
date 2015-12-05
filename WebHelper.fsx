@@ -9,3 +9,10 @@ let download url =
     use stream = resp.GetResponseStream() 
     use reader = new IO.StreamReader(stream) 
     reader.ReadToEnd()
+    
+let downloadLines = 
+    download 
+    >> (fun (s:string) -> s.Split([|'\r';'\n'|]))
+    >> List.ofArray
+    >> List.filter (fun w -> w <> "")
+    
