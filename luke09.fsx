@@ -12,4 +12,5 @@ let toExcelCol n =
             toExcelCol' (rem-1L) (letters.[int rest]::acc)
     toExcelCol' (n-1L) [] |> List.toArray |> String
 
-toExcelCol 142453146368L
+[1L;2L;3L;26L;27L;28L;52L;79L;142453146368L]
+|> List.map (fun i -> i, toExcelCol i)
