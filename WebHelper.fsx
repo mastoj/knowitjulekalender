@@ -16,3 +16,4 @@ let downloadLines =
     >> List.ofArray
     >> List.filter (fun w -> w <> "")
     
+let downloadFloats = downloadLines >> List.map float
