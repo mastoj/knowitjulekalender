@@ -1,7 +1,7 @@
 #load "WebHelper.fsx"
 open WebHelper
 open System
-
+#time
 let numbers = 
     "http://pastebin.com/raw.php?i=sJVZp7BH"       
     |> downloadFloats
@@ -34,4 +34,5 @@ let find2Max numbers =
     |> List.map (fun (x,y) -> x+y)
     |> List.max 
     
-numbers |> find2Max
+let result = numbers |> find2Max
+#time
