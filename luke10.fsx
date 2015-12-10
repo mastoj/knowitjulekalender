@@ -15,12 +15,12 @@ let maxBuy numbers =
             let maxPrice' = if x > maxPrice then x else maxPrice
             let maxProfit' = if maxPrice' - x > maxProfit then maxPrice' - x else maxProfit
             maxBuy' maxPrice' maxProfit' rest' (maxProfit'::acc)
-    maxBuy' (revNums |> List.head) 0.0 (revNums |> List.tail) []
+    maxBuy' (revNums |> List.head) 0.0 (revNums |> List.tail) [0.0]
 
 let maxSell numbers = 
     let rec maxSell' minPrice maxProfit rest acc = 
         match rest with
-        | [] -> acc |> List.rev
+        | [] -> 0.0 :: (acc |> List.rev)
         | x::rest' -> 
             let minPrice' = if x < minPrice then x else minPrice
             let maxProfit' = if x - minPrice' > maxProfit then x - minPrice' else maxProfit
