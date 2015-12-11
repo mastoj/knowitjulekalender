@@ -145,7 +145,6 @@ module Roman =
                 | Digit digit -> 
                     Some digit 
                 | BadChar ch -> 
-                    eprintfn "%c is not a valid character" ch
                     None
                 )
         if hasBadChar digits then None

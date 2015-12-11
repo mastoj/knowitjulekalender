@@ -10,7 +10,7 @@ let numbers =
     |> downloadLines
 
 let (|Decimal|Roman|Binary|) (expr:string) = 
-    if expr.StartsWith("0b") then Binary (expr, Convert.ToInt32(expr,2))
+    if expr.StartsWith("0b") then Binary (expr, Convert.ToInt32(expr.Substring(2),2))
     else
         match Roman.tryParse expr with
         | Some v -> Roman (expr, v)
@@ -28,3 +28,4 @@ numbers
 |> List.sortBy snd
 |> List.skip (numbers.Length/2)
 |> List.head
+|> printfn "%A"
