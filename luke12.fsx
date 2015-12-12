@@ -1,0 +1,1 @@
+seq {for x in 7L .. 7L .. 100000000L do if x%5L<>0L then yield x} |> Seq.sum
