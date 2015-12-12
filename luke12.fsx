@@ -12,3 +12,13 @@ let rec doLuke12 current max acc =
 
 let res = doLuke12 7L 100000000L 0L
 #time   
+
+#time
+let sumMultiplesOf x upTo = 
+    let rec sumMultiplesOf' acc current =
+        if current > upTo then acc
+        else sumMultiplesOf' (acc+current) (current+x)
+    sumMultiplesOf' 0L x
+    
+let res2 = (sumMultiplesOf 7L 100000000L) - (sumMultiplesOf 35L 100000000L) 
+#time
