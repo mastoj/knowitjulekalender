@@ -1,6 +1,6 @@
-#r "packages\\FsCheck\\lib\\net45\\FsCheck.dll"
+//#r "packages\\FsCheck\\lib\\net45\\FsCheck.dll"
 open System
-open FsCheck
+//open FsCheck
 
 let numbers = 
     [
@@ -82,4 +82,6 @@ let convertTwiceIsSame n =
     if n > 9999999 || n < 0 then true
     else n = (n |> decToKlingon |> klingonToDec)
 
-Check.One({Config.Quick with MaxTest = 50000}, convertTwiceIsSame) 
+//Check.One({Config.Quick with MaxTest = 50000}, convertTwiceIsSame) 
+
+let twenty2 = 1 |> decToKlingon
