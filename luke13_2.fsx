@@ -1,7 +1,7 @@
 open System.Collections.Generic
 open System.Numerics
 
-let n = 10000
+let n = 20000
 let knallSeq() =
     let knalls = [(bigint 1)]
     let rec knallSeq' (two, three, five) (nums:BigInteger list) = 
