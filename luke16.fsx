@@ -17,11 +17,10 @@ let splitInTenths n =
 
 let rec findTwos (tenth, n, rest) =
     match tenth,n with
-    | 0L, _ -> 0L
+    | x, _ when x < 2L -> 0L
     | 1L, x when x > 1L -> 1L
-    | 1L, _ -> 0L
-    | x, 2L -> 2L*findTwos(x,1L, rest)+rest+1L
     | 10L, 1L -> 1L
+    | x, 2L -> 2L*findTwos(x,1L, rest)+rest+1L
     | x, 1L -> 
         (findTwos(x/10L,1L, rest)+x/100L)*10L  
     | x, y -> 
