@@ -1,8 +1,8 @@
-// Used for verification of smaller numbers
 let inline calculateOccurensesInInterval char start stop = 
     seq{ for i in start .. stop do yield i}
     |> Seq.map (string >> (fun s -> s |> Seq.filter ((=) char) |> Seq.length |> bigint))
     |> Seq.sum
+
 
 let splitInTenths n = 
     let rec splitInTenths rem tenth acc acc2' = 
@@ -28,3 +28,4 @@ let rec findTwos (tenth, n, rest) =
 #time
 12345678987654321L |> splitInTenths |> List.map findTwos |> List.sum |> printfn "%A"
 #time
+
