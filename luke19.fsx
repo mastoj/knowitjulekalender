@@ -10,4 +10,19 @@ let countStep max =
             countStep' (x+1)
     countStep' 0
 
-countStep 30
+let res1 = countStep 30
+
+let rec createSeq() = 
+    let init = [0;1;2;4]
+    let rec rest x y z =
+        seq {
+            let next = x + y + z
+            yield next
+            yield! rest next x y
+        }
+    seq {
+        yield! init
+        yield! rest 4 2 1
+    }
+
+let res2 = createSeq() |> Seq.skip 30 |> Seq.head
