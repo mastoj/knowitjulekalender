@@ -154,4 +154,20 @@ module Roman =
         match toRomanNumeral s with
         | Some rn -> toInt rn |> Some
         | None -> None
+
+module Queue =
+    open System.Collections.Generic
+    let enqueue<'T> item (q:Queue<'T>) = 
+        q.Enqueue(item)
+        q
+    
+    let dequeue<'T> (q:Queue<'T>) = 
+        if q.Count > 0 
+        then
+            let item = q.Dequeue()
+            Some (item,q)
+        else
+            None
         
+    let peek<'T> (q:Queue<'T>) = 
+        q.Peek()
