@@ -4,7 +4,7 @@ let cutDown list =
         | [] -> acc
         | min::rest -> 
             let count = list |> List.length
-            let list' = list |> List.map (fun x -> x-min) |> List.filter (fun x -> x <> 0)
+            let list' = list |> List.skipWhile (fun x -> x=min)
             cutDown' (count::acc) list'
     cutDown' [] (list |> List.sort) |> List.rev
 
