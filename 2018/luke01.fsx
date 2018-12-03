@@ -1,5 +1,5 @@
-#load "../helpers/WebHelper.fsx"
-open WebHelper
+#load "../helpers/Helpers.fsx"
+open Helpers.WebHelper
 
 let fileUrl = "https://s3-eu-west-1.amazonaws.com/knowit-julekalender-2018/input-vekksort.txt"
 
