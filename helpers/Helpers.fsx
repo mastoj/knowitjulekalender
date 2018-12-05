@@ -29,9 +29,9 @@ module Math =
             | [] -> primes
             | [x] -> x::primes
             | x::rest ->
-                let primes' = x::primes
+                let primes' = x::primes 
                 let candidates' = 
                     rest 
-                    |> List.filter (fun y -> y%x <> 0)
+                    |> List.filter (fun y -> y%x <> 0L)
                 createPrimeSieve' candidates' primes'
-        createPrimeSieve' ([2 .. n]) []
+        createPrimeSieve' ([2L .. n]) []
