@@ -8,37 +8,99 @@ let numbers = data |> Seq.map int |> List.ofSeq
 
 
 // implementing this https://en.wikipedia.org/wiki/Longest_increasing_subsequence
-let solve numbers =
-    let generateList (numbers: int list) ((l, pred, smallest): int*Map<int,int>*Map<int,int>): int list =
-        let rec internalGenerate (numbers: int list) index k acc =
-            if index < 0 then acc
-            else
-                let acc' = (numbers.[k])::acc
-                let k' = pred.[k]
-                internalGenerate numbers (index - 1) k' acc'
-        internalGenerate numbers (l-1) (smallest.[l]) []
+let solve numbers = numbers
+    // let generateList (numbers: int list) ((l, pred, smallest): int*Map<int,int>*Map<int,int>): int list =
+    //     let rec internalGenerate (numbers: int list) index k acc =
+    //         if index < 0 then acc
+    //         else
+    //             let acc' = (numbers.[k])::acc
+    //             let k' = pred.[k]
+    //             internalGenerate numbers (index - 1) k' acc'
+    //     internalGenerate numbers (l-1) (smallest.[l]) []
 
-    let rec internalSolve l (pred: Map<int, int>) (smallest: Map<int, int>) (numbers: int list) index =
-        match numbers with
-        | [] -> l, pred, smallest
-        | currentValue::rest ->
-            let newL = findLow currentValue 1 l smallest numbers
-            let pred' = pred |> Map.add index (smallest |> Map.tryFind (newL - 1) |> Option.defaultValue 0)
-            let smallest' = smallest |> Map.add newL index
-            let l' = max newL l
-            internalSolve l' pred' smallest' rest (index + 1)
-    and findLow currentValue low high smallest numbers =
+    // let rec internalSolve l (pred: Map<int, int>) (smallest: Map<int, int>) (numbers: int list) index =
+    //     match numbers with
+    //     | [] -> l, pred, smallest
+    //     | currentValue::rest ->
+    //         let newL = findLow currentValue 1 l smallest numbers
+    //         let pred' = pred |> Map.add index (smallest |> Map.tryFind (newL - 1) |> Option.defaultValue 0)
+    //         let smallest' = smallest |> Map.add newL index
+    //         let l' = max newL l
+    //         internalSolve l' pred' smallest' rest (index + 1)
+    // and findLow currentValue low high smallest numbers =
+    //     if low > high then low
+    //     else
+    //         let mid = (((low + high) |> float) / 2.) |> ceil |> int
+    //         if numbers.[smallest.[mid]] < currentValue
+    //         then findLow currentValue (mid+1) high smallest numbers
+    //         else findLow currentValue mid (high-1) smallest numbers
+
+    // internalSolve 0 Map.empty Map.empty numbers 0 |> generateList numbers
+
+
+// 1 ; 1,1
+
+// 1 ; 1,1
+// 1, 1 ; 2,1
+
+// 1 ; 1,1
+// 1, 1 ; 2,1
+// 1, 1, 7 ; 3,7
+
+// 1 ; 1,1
+// 1, 1 ; 2,1
+// 1, 1, 7 ; 3,7
+// 1, 1, 6 ; 3,6
+
+let solve2 input =
+    let rec internalSolve acc input =
+        match input with
+        | [] -> acc //|> List.sortByDescending fst |> List.head
+        | x::rest when acc |> List.isEmpty -> internalSolve [x,1] rest
+        | x::rest ->
+            let (cnt, _) = 
+                acc 
+                |> List.skipWhile (fun (cnt', v') -> v' > x) 
+                |> List.tryHead 
+                |> Option.defaultValue (0, 0)
+            let acc = (cnt+1, x)::acc |> List.sortBy snd |> List.sortByDescending fst
+            internalSolve acc rest 
+    internalSolve [] input |> List.maxBy fst |> fst
+
+let solve3 (input: int list) =
+    let rec findLow currentIndex low high (input: int list) (smallestList: int []) =
         if low > high then low
         else
-            let mid = (((low + high) |> float) / 2.) |> ceil |> int
-            if numbers.[smallest.[mid]] < currentValue
-            then findLow currentValue (mid+1) high smallest numbers
-            else findLow currentValue mid (high-1) smallest numbers
+            let mid = ceil (float(low + high)/2.) |> int
+            let (low, high) = 
+                if input.[smallestList.[mid]] < input.[currentIndex] 
+                then (mid+1, high) 
+                else (low, mid-1)
+            findLow currentIndex low high input smallestList
 
-    internalSolve 0 Map.empty Map.empty numbers 0 |> generateList numbers
+    let predList = Array.init (input.Length) (fun _ -> 0)
+    let smallestList = Array.init (input.Length + 1) (fun _ -> 0)
+    let rec internalSolve l currentIndex (predList: int []) (smallestList: int []) (input: int list) =
+        if currentIndex = input.Length then (predList, smallestList)
+        else
+            let low = 1
+            let high = l
+            let lCandidate = findLow currentIndex low high input smallestList
+            predList.[currentIndex] <- smallestList.[lCandidate - 1]
+            smallestList.[lCandidate] <- currentIndex
+            let l = if lCandidate > l then lCandidate else l
+            internalSolve l (currentIndex + 1) predList smallestList input
+
+    internalSolve 0 0 predList smallestList input
+
+let example = [1; 1; 7; 6; 6; 7; 8]
+let exampleBest = [1; 1; 6; 6; 7; 8]
+
 
 #time
-let result = numbers |> solve
+numbers |> solve3 |> snd |> Array.max |> printfn "Example: %A"
+// // let result = numbers |> solve2
 
-printfn "%A" (result.Length, result)
+// printfn "%A" result
 #time
+// 1974
