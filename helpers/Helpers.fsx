@@ -3,6 +3,12 @@ module WebHelper =
     open System.IO
     open System.Net
 
+    let downloadAll url =
+        let req = WebRequest.Create(Uri(url))
+        let resp = req.GetResponse()
+        let stream = resp.GetResponseStream()
+        let reader = new IO.StreamReader(stream)
+        reader.ReadToEnd()
 
     let download url =
         let req = WebRequest.Create(Uri(url))
