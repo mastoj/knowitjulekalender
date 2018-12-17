@@ -1,3 +1,8 @@
+module String =
+    open System
+    let split (separator: string) (str: string) =
+        str.Split([|separator|], StringSplitOptions.RemoveEmptyEntries)
+
 module WebHelper =
     open System
     open System.IO
