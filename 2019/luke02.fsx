@@ -9,8 +9,10 @@ let getCapacity (str: string) =
     |> (fun s -> s.ToCharArray()) 
     |> Array.filter (fun c -> c = ' ')
     |> Array.length
+#time
 let result = 
     lines 
     |> Array.map getCapacity 
     |> Array.sum
+#time
 printfn "Result: %A" result
