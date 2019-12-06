@@ -4,5 +4,4 @@ nuget FSharp.Collections.ParallelSeq
 nuget FsCheck
 nuget Newtonsoft.Json
 nuget SixLabors.ImageSharp
-nuget SkiaSharp
 nuget System.Drawing.Common 4.7.0
