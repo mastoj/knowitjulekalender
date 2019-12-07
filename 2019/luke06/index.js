@@ -1,34 +1,31 @@
-var fs = require('fs'),
-PNG = require('pngjs').PNG;
+const fs = require("fs");
+const pngjs = require("pngjs");
 
-fs.createReadStream('../luke06.png')
-  .pipe(new PNG())
-  .on('parsed', function() {
+const getPngIndex = (imageWidth, x, y) => (imageWidth * y + x) << 2;
 
-    let prevR = this.data[0]
-    let prevG = this.data[1]
-    let prevB = this.data[2]
-    
-    for (var y = 0; y < this.height; y++) {
-        for (var x = 0; x < this.width; x++) {
-            if(!(y == 0 && x == 0)) {
-                console.log(`R: ${prevR}; G: ${prevG}; B: ${prevB}; x: ${x}; y: ${y}`)
-                var idx = (this.width * y + x) << 2;
-                console.log(`Rin: ${this.data[idx]}; Gin: ${this.data[idx+1]}; Bin: ${this.data[idx+2]}`)
-                const nextR = this.data[idx];
-                const nextG = this.data[idx];
-                const nextB = this.data[idx];
-                // invert color
-                this.data[idx] =  this.data[idx] ^ prevR;
-                this.data[idx+1] = this.data[idx+1] ^ prevG;
-                this.data[idx+2] = this.data[idx+2] ^ prevB;
-                console.log(`Rout: ${this.data[idx]}; Gout: ${this.data[idx+1]}; Bout: ${this.data[idx+2]}`)
-                prevR = nextR;
-                prevG = nextG;
-                prevB = nextB;
-            }
-        }
+fs.createReadStream("../luke06.png")
+  .pipe(
+    new pngjs.PNG({
+      filterType: 4,
+    }),
+  )
+  .on("parsed", function() {
+    let current = this.data[
+      getPngIndex(this.width, this.width - 1, this.height - 1)
+    ];
+
+    for (let y = this.height - 2; y > 0; y--) {
+      for (let x = this.width - 2; x > 0; x--) {
+        let prev = getPngIndex(this.width, x, y);
+
+        // xor withprev
+        this.data[current] = this.data[current] ^ this.data[prev];
+        this.data[current + 1] = this.data[current + 1] ^ this.data[prev + 1];
+        this.data[current + 2] = this.data[current + 2] ^ this.data[prev + 2];
+
+        current = prev;
+      }
     }
 
-    this.pack().pipe(fs.createWriteStream('out.png'));
-});
+    this.pack().pipe(fs.createWriteStream("knowit-day6.png"));
+  });
